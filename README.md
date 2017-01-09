@@ -1,5 +1,5 @@
 # My-Projects
-<b><i>LOG:</i></b>  
+<b><i><u>LOG:</u></i></b>  
 1/9/2017  
 The project was created in a span of 5-7 days including optimization, design, and coding.
 I apologize for the scarcity of comments in the project. Given my personal time constraint and that it was a personal project,
