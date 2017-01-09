@@ -25,6 +25,8 @@ import java.util.Random;
  * Created by ducng on 12/13/2016.
  */
 
+//class that renders game
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     public static final int WIDTH = 800, HEIGHT = 480;
@@ -275,7 +277,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         cursorPos = new Coordinate();
         state = s.getState();
         aiGame = s.getAigame();
-        difficulty = s.getDifficulty();//need to save instance of board and make constructor for board
+        difficulty = s.getDifficulty();
         if(!s.getTileColorList().isEmpty()) {
             board = new Board();
             for (int i = 0; i < board.getTileList().size(); i++) {
@@ -394,7 +396,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         thread.start();
             //we can safely start the gameloop once the surface is created
     }
-
+    //updates parameters within the game
     public void update(){
         if(menu){
             if(y > HEIGHT){
@@ -716,7 +718,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
 
     }
-
+    //Algorithm for selecting tiles.
     public Tile selectTile(Coordinate pos){
         final float scaleFactorX = getWidth()/(float)WIDTH;
         final float scaleFactorY = getHeight()/(float)HEIGHT;
@@ -735,6 +737,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
         return null;
     }
+    //algorithm for selecting circles
     public boolean circleSelect(Coordinate cursorPos, float x, float y, float radius){
         final float scaleFactorX = getWidth()/(float)WIDTH;
         final float scaleFactorY = getHeight()/(float)HEIGHT;
@@ -842,7 +845,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
         return false;
     }
-
+    //method checks for tap events on surface of device
     public boolean onTouchEvent(MotionEvent event) {
         final float scaleFactorX = getWidth()/(float)WIDTH;
         final float scaleFactorY = getHeight()/(float)HEIGHT;
@@ -850,7 +853,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
         if(!menu) {
             switch (state) {
-                case 0:
+                case 0://titlescreen
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -866,7 +869,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 1:
+                case 1://main menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -911,7 +914,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 2:
+                case 2://cpu menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -946,7 +949,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 3:
+                case 3://options menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -979,7 +982,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 4:
+                case 4://versus game
                     switch (event.getAction()) {
                         case (MotionEvent.ACTION_DOWN):
                             if(!timed) {
@@ -1063,7 +1066,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             }
                     }
                     break;
-                case 5:
+                case 5://ai game
                     switch (event.getAction()) {
                         case (MotionEvent.ACTION_DOWN):
                             if(!timed) {
@@ -1135,7 +1138,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             }
                     }
                     break;
-                case 6:
+                case 6://cpu turn order menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -1225,7 +1228,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 7:
+                case 7://color menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -1357,7 +1360,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 8:
+                case 8://other menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -1400,7 +1403,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 9:
+                case 9://gamestatics
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -1426,7 +1429,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 10:
+                case 10://game options menu
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             if (cursorPos.getX() > scaleFactorX * (WIDTH - 100) && cursorPos.getX() < scaleFactorX * (WIDTH - 10)
@@ -1560,7 +1563,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 11:
+                case 11://credits
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             drops.add(new Drop(cursorPos, scaleFactorX, scaleFactorY));
@@ -1587,7 +1590,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                             return false;
                     }
                     break;
-                case 12:
+                case 12: //unused menu
                     switch(event.getAction()){
                         case (MotionEvent.ACTION_DOWN):
                             soundEffects.add(new Soundeffects(context, R.raw.back_tap));
@@ -1610,7 +1613,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
         return super.onTouchEvent(event);
     }
-
+    //draws game
     @Override
     public void draw(Canvas canvas){
         final float scaleFactorX = getWidth()/(float)WIDTH;
@@ -1670,10 +1673,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             canvas.restoreToCount(savedState);
         }
     }
-
+    //draws background
     public void drawBackground(Canvas canvas){
         canvas.drawRGB(192, 192, 192);
     }
+    //draws transition
     public void drawTransition(Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.rgb(192,192,192));
