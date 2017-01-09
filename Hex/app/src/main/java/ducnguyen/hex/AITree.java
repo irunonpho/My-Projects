@@ -17,6 +17,7 @@ public class AITree {
         private ArrayList<Node> children;
         private Node parent;
 
+        //node structure of AI tree carrying information regarding the strength of a move
         Node() {
             actionWeight = 0;
             gameEnd = 0;
@@ -74,19 +75,20 @@ public class AITree {
         }
     }
 
-    private ArrayList<Node> roots = new ArrayList<Node>();
-    private ArrayList<Integer> rootsTileID = new ArrayList<Integer>();
+    private ArrayList<Node> roots = new ArrayList<Node>(); //AITree roots. Note: Each root element is a disjoint tree
+    private ArrayList<Integer> rootsTileID = new ArrayList<Integer>(); //Carries the ID of each available tile
 
-    private boolean turnorder[];
+    private boolean turnorder[]; //turnorder for purposes of changing the sign of weights of actions
 
-    private boolean isAiw;
-    private int depth;
-    private int aggression;
+    private boolean isAiw; //stores the boolean if the AI was first
+    private int depth; //depth of tree
+    private int aggression; //each move carries a different level of aggression.
 
-    public static int WIN = 100000;
-    public static int LOSS = -1000000;
+    public static int WIN = 100000; //Static variable representing the weight of winning
+    public static int LOSS = -1000000; //Static variable representing the weight of losing
 
-    public AITree(Board board, Player wplayer, Player bplayer, boolean isAIW, int depth) {
+    //AITree constructor
+    public AITree(Board board, Player wplayer, Player bplayer, boolean isAIW, int depth) { 
 
         ArrayList<AITile> tileList = new ArrayList<AITile>();
         ArrayList<AINeighbors> neighborList = new ArrayList<AINeighbors>();
@@ -134,6 +136,7 @@ public class AITree {
         //simulation part of AITree constructor, this first constructs the roots
         int color;
         for (Tile T : board.getTileList()) {
+            //generates dummy objects for purposes of simulation
             wPlayer = new Player(wplayer.getPlayerColor(), true);
             bPlayer = new Player(bplayer.getPlayerColor(), false);
             wPlayer.setTurn(wplayer.isTurn());
@@ -146,6 +149,7 @@ public class AITree {
                 color = wPlayer.getPlayerColor();
             }
             if (legalAction(T, board.getNeighborList(), wplayer, bplayer) && T.color != color) {
+                //checks if move is legal
                 AITile selectedTile = null;
                 for (Tile t : board.getTileList()) {
                     tileList.add(new AITile(t));
@@ -165,6 +169,7 @@ public class AITree {
                 bPlayer.setTurn(bplayer.isTurn());
                 wPlayer.setActionCounter(wplayer.getActionCounter());
                 bPlayer.setActionCounter(bplayer.getActionCounter());
+                //section below simulates the move committed at a node
                 if (wPlayer.isTurn()) {
                     tileTransition(selectedTile, tileList, neighborList, wPlayer, wPlayer, bPlayer, node);
                     wPlayer.usedAction();
@@ -182,8 +187,10 @@ public class AITree {
                         bPlayer.endOfTurn(bPlayer.isTurn());
                     }
                 }
+                //adds potential move for AI
                 roots.add(node);
                 rootsTileID.add(selectedTile.getTileID());
+                //generates the children if depth is greater than 0
                 if (depth > 0) {
                     if (wPlayer.isTurn()) {
                         color = bPlayer.getPlayerColor();
@@ -200,19 +207,23 @@ public class AITree {
                             wPlayer1.setActionCounter(wPlayer.getActionCounter());
                             bPlayer1.setActionCounter(bPlayer.getActionCounter());
                             ArrayList<AITile> tempTileList = new ArrayList<AITile>();
+                            //generates new dummy board
                             for (AITile t1 : tileList) {
                                 tempTileList.add(new AITile(t1));
                             }
+                            //scans board for selected tile
                             for (AITile t1 : tempTileList) {
                                 if (t.getTileID() == t1.getTileID()) {
                                     selectedTile = t1;
                                     break;
                                 }
                             }
+                            //creates neighbor tiles for dummy board
                             ArrayList<AINeighbors> tempNeighborList = new ArrayList<AINeighbors>();
                             for (AINeighbors N : neighborList) {
                                 tempNeighborList.add(new AINeighbors(N, tempTileList));
                             }
+                            //adds the children
                             node.addChild(generateChildren(selectedTile, tempTileList, tempNeighborList, node, wPlayer1, bPlayer1, depth - 1));
                         }
                     }
@@ -227,10 +238,11 @@ public class AITree {
         return rootsTileID;
     }
 
+    //recursively generates children of roots. The tree is generated recursively inorder to save memory space
     public Node generateChildren(AITile tile, ArrayList<AITile> tileList, ArrayList<AINeighbors> neighborList, Node parent,
                                  Player wplayer, Player bplayer, int height) {
         Node currentNode = new Node();
-
+        //simulates move
         if (wplayer.isTurn()) {
             tileTransition(tile, tileList, neighborList, wplayer, wplayer, bplayer, currentNode);
             wplayer.usedAction();
@@ -248,10 +260,11 @@ public class AITree {
                 bplayer.endOfTurn(bplayer.isTurn());
             }
         }
-            //this section adds children to the current node.
+        //this section adds children to the current node.
         int color;
         if(height > 0 && currentNode.gameEnd == 0) {
             for (AITile T : tileList) {
+                //dummy player objects
                 Player wPlayer = new Player(wplayer.getPlayerColor(), true);
                 Player bPlayer = new Player(bplayer.getPlayerColor(), false);
                 wPlayer.setTurn(wplayer.isTurn());
@@ -265,6 +278,7 @@ public class AITree {
                 }
                 if (legalAction(T, neighborList, wPlayer, bPlayer) && T.getColor() != color) {
                     AITile selectedTile = null;
+                    //dummy board
                     ArrayList<AITile> tempTileList = new ArrayList<AITile>();
                     for (AITile t : tileList) {
                         tempTileList.add(new AITile(t));
@@ -286,7 +300,7 @@ public class AITree {
         currentNode.setParent(parent);
         return currentNode;
         }
-
+    //checks if a move is legal
     public boolean legalAction(Tile tile, ArrayList<Neighbors> neighborList, Player wPlayer, Player bPlayer){
         if(tile != null) {
             ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
@@ -317,6 +331,7 @@ public class AITree {
         }
         return false;
     }
+    //checks if a move is legal
     public boolean legalAction(AITile tile, ArrayList<AINeighbors> neighborList, Player wPlayer, Player bPlayer){
         if(tile != null) {
             ArrayList<AITile> adjacentTiles = new ArrayList<AITile>();
@@ -347,6 +362,7 @@ public class AITree {
         }
         return false;
     }
+    //simulates the transition of tiles
     public void tileTransition(AITile tile, ArrayList<AITile> tileList, ArrayList<AINeighbors> neighborList, Player player, Player wPlayer, Player bPlayer, Node node){
         int actionWeight = 0;
         ArrayList<AITile> adjacentTiles = new ArrayList<AITile>();
@@ -451,6 +467,7 @@ public class AITree {
         }
         node.setActionWeight(actionWeight);
     }
+    //retrieves the weight of moves
     public int getWeight(Node nodeAction, int height){
         int sign;
         int sign1 = 1;
