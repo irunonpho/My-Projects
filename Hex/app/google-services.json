@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "721484337017",
+    "firebase_url": "https://phos-58b54.firebaseio.com",
+    "project_id": "phos-58b54",
+    "storage_bucket": "phos-58b54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721484337017:android:cebce97fbede16e4",
+        "android_client_info": {
+          "package_name": "ducnguyen.hex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721484337017-uciqa30c3obh3jcv7nu1ja2ujc4an4t1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ducnguyen.hex",
+            "certificate_hash": "12D9964E049D89B02D04A3D4F671987DDC935C4F"
+          }
+        },
+        {
+          "client_id": "721484337017-hbc1qps6fr49cr9fb38j6f7qoe3u9l2d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRSyBtijQ5ttXTPy7akumQKVPyd7wXXlY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721484337017-hbc1qps6fr49cr9fb38j6f7qoe3u9l2d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
