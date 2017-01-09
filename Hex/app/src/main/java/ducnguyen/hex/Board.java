@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * Created by ducng on 12/13/2016.
  */
 
+
 public class Board {
-    //72 neighbors
     private ArrayList<Tile> tileList = new ArrayList<Tile>();
     private ArrayList<Neighbors> neighborList = new ArrayList<Neighbors>();
     public static float e = 10.0f;
